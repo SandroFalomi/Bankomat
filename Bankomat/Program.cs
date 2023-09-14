@@ -30,11 +30,7 @@ namespace Bankomat
 
             //------------------------------------------------------------------------------------//
 
-            while (true) 
-            {
-                Console.Clear();
-                bank.Menu();
-            }
+            while (bank.Menu()) { }
 
         }
     }

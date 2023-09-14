@@ -8,8 +8,8 @@ namespace BankomatLibrary
 {
     public class BankAccount
     {
-        public string iban;
-        public double saldo;
+        private string iban;
+        private double saldo;
 
         public BankAccount(double saldo)
         {
@@ -57,7 +57,12 @@ namespace BankomatLibrary
 
         public string ViewSaldo()
         {
-            return "Data " + (DateTime.Now.ToString()) + "\nSaldo Attuale: " + this.saldo;
+            return "Saldo Attuale: " + this.saldo;
+        }
+
+        public string GetIban()
+        {
+            return this.iban;
         }
     }
 }

@@ -17,12 +17,18 @@ namespace BankomatLibrary
             clienti = new List<Client>();
         }
 
-        public void Menu()
+        public bool Menu()
         {
-
+            Console.Clear();
             Console.WriteLine("Benvenuto inserire User\n\n\n");
             Console.Write("user:\t");
             string user = Console.ReadLine();
+
+            if (user.Equals("Admin.Exit"))
+            {
+                return false;
+            }
+
             while (!ControlloUser(user)) 
             {
                 Console.Clear();
@@ -34,27 +40,27 @@ namespace BankomatLibrary
                 user = Console.ReadLine();
             }
 
-            if (!ControlloState())
+            if (!this.persona.ReturnState())
             {
                 Console.Clear();
                 Console.BackgroundColor= ConsoleColor.Red;
                 Console.WriteLine("\n\nQuesto Account è temporaneamente bloccato.\nPremere qualunque tasto per tornare indietro");
                 Console.ResetColor();
                 Console.ReadKey();
-                return;
+                return true;
             }
 
             Console.Clear();
             Console.WriteLine("Benvenuto " + user + ", inserire password\n\n\n");
             Console.Write("password:\t");
             string password = Console.ReadLine();
-            while (!Controllopassword(password) && this.persona.controllo < maxTentativi)
+            while (!Controllopassword(password) && this.persona.ControlloMaggioreAlLimite(maxTentativi))
             {
-                this.persona.controllo++;
+                this.persona.IncremenControllo();
 
-                if (this.persona.controllo == maxTentativi)
+                if (this.persona.ControlloMaggioreAlLimite(maxTentativi))
                 {
-                    this.persona.state = false;
+                    this.persona.ChangeState();
                     Console.Clear();
                     Console.BackgroundColor= ConsoleColor.Red;
                     Console.WriteLine("\n\nHai raggiunto il limite di tentativi, l'account verrà bloccato\nPremere qualunque tasto per tornare indietro");
@@ -74,16 +80,21 @@ namespace BankomatLibrary
                 password = Console.ReadLine();
             }
 
-            if(!(this.persona.controllo >= maxTentativi))
+            if(!this.persona.ControlloMaggioreAlLimite(maxTentativi))
+            {
+                this.persona.ResetControllo();
                 while (MenuConto.viewConto(this.persona)) { }
-
+            }
+                
+            return true;
         }
 
+        #region Controlli
 
         public bool ControlloUser(string user)
         {
-            Client x = this.clienti.Where(x => x.userName == user).FirstOrDefault();
-            if(x == null)
+            Client x = this.clienti.Where(x => x.ReturnUserName() == user).FirstOrDefault();
+            if (x == null)
             {
                 return false;
             }
@@ -93,20 +104,15 @@ namespace BankomatLibrary
 
         public bool Controllopassword(string password)
         {
-            return this.persona.password.Equals(password); // controllo se la password è uguale
+            return this.persona.ControlloPassword(password); // controllo se la password è uguale
         }
 
-        public bool ControlloState()
-        {
-            return this.persona.state;
-        }
+        #endregion
 
         //public Client GivePersona(string user)
         //{
         //    return this.clienti.Where(x => x.userName == user).FirstOrDefault();
         //}
-
-
 
         #region metodi di test
 

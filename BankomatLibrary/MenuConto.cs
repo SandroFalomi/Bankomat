@@ -10,12 +10,12 @@ namespace BankomatLibrary
     {
         public static bool viewConto(Client persona)
         {
-            BankAccount ba = persona.bankAccount;
+            BankAccount ba = persona.ReturnBankAccount();
             string input = string.Empty;
             do
             {
                 Console.Clear();
-                Console.WriteLine("Account con iban:\t" + persona.bankAccount.iban + "\n\n");
+                Console.WriteLine("Account con iban:\t" + ba.GetIban() + "\n\n");
                 Console.WriteLine("Cosa desideri fare?");
                 Console.WriteLine("\n1) Prelevare");
                 Console.WriteLine("\n2) Depositare");
@@ -80,7 +80,7 @@ namespace BankomatLibrary
 
             Console.WriteLine("\n");
             Console.BackgroundColor = ConsoleColor.Green;
-            Console.WriteLine(ba.ViewSaldo());
+            Console.WriteLine("Data " + DateTime.Now.ToString() + "\n" + ba.ViewSaldo());
             Console.ResetColor();
 
             Console.WriteLine("\nPremere qualunque tasto per andare avanti...\n");
