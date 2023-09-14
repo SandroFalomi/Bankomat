@@ -71,6 +71,5 @@ namespace BankomatLibrary
             return this.userName;
         } 
         #endregion
-
     }
 }
